@@ -87,6 +87,16 @@ class CatalogueTests(unittest.TestCase):
         d = copy.deepcopy(self.progress); del d['components']['visor']
         with self.assertRaises(ValueError): validate_progress(self.parts, d, self.root)
 
+    def test_negative_match_count_rejected(self):
+        d = copy.deepcopy(self.progress)
+        d['components']['orderbook']['raw_equal_bodies'] = -1
+        with self.assertRaises(ValueError): validate_progress(self.parts, d, self.root)
+
+    def test_negative_normalized_count_rejected(self):
+        d = copy.deepcopy(self.progress)
+        d['components']['orderbook']['normalized_only_bodies'] = -1
+        with self.assertRaises(ValueError): validate_progress(self.parts, d, self.root)
+
 
 class VisorIndexTests(unittest.TestCase):
     def test_target_for_maps_nodes_and_visor(self):
