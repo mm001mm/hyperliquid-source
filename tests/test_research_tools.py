@@ -77,6 +77,12 @@ class CatalogueTests(unittest.TestCase):
         d['components']['orderbook']['gates']['built'] = True
         with self.assertRaises(ValueError): validate_progress(self.parts, d, self.root)
 
+    def test_external_evidence_path_rejected(self):
+        d = copy.deepcopy(self.progress)
+        d['components']['orderbook']['gates']['built'] = True
+        d['components']['orderbook']['evidence'] = ['/etc/passwd']
+        with self.assertRaises(ValueError): validate_progress(self.parts, d, self.root)
+
     def test_fabricated_denominator_rejected(self):
         d = copy.deepcopy(self.progress)
         row = d['components']['orderbook']
