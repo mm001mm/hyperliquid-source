@@ -97,6 +97,11 @@ class CatalogueTests(unittest.TestCase):
         d['components']['orderbook']['normalized_only_bodies'] = -1
         with self.assertRaises(ValueError): validate_progress(self.parts, d, self.root)
 
+    def test_unknown_dependency_rejected(self):
+        parts = copy.deepcopy(self.parts)
+        parts[0]['depends_on'] = ['nonexistent-component']
+        with self.assertRaises(ValueError): validate_progress(parts, self.progress, self.root)
+
 
 class VisorIndexTests(unittest.TestCase):
     def test_target_for_maps_nodes_and_visor(self):
